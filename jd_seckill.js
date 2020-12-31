@@ -122,7 +122,7 @@ const jd_buy = async (config) => {
     } catch (error) {
         console.log(error);
         console.log(chalk.red(`订单提交失败`));
-        // await browser.close();
+        await browser.close();
     }
 };
 
@@ -180,6 +180,8 @@ const jd_yuyue = async (config) => {
             } else {
                 console.log(chalk.green(`${itemName}预约失败`));
             }
+        } else {
+            console.log(chalk.green(`已经预约过了！`));
         }
         await browser.close();
     } catch (error) {
