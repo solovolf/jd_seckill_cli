@@ -2087,7 +2087,7 @@ class UserAgents {
     }
 
     static random() {
-        return this.randomUserAgentInArr(this.user_agents);
+        return this.randomUserAgentInArr(this.user_agents) + "Trident";
     }
 
     static filterByRegex(reg) {
