@@ -49,9 +49,10 @@ const jd_buy = async (config) => {
         console.log(chalk.green(`开始访问商品页面成功---------`));
         let itemName = await page.$eval("body > div:nth-child(10) > div > div.itemInfo-wrap > div.sku-name", (el) => el.innerText);
         // 数量变为2
-        // await page.waitForFunction(() => {
-        //     window.setAmount.add();
-        // });
+        await page.waitForFunction(() => {
+            document.querySelector("#buy-num").value = 2;
+            return true;
+        });
         // 抢购
         await qianggou(page);
         console.log(chalk.green(`开始寻找按钮点击`));
@@ -61,13 +62,12 @@ const jd_buy = async (config) => {
             if (searchQianggou.indexOf("加入") >= 0) {
                 console.log(chalk.green(`寻找到了，开始抢购`));
                 await Promise.all([page.waitForNavigation(), page.click("#btn-reservation")]);
+                // await Promise.all([page.waitForNavigation(), page.click("#InitCartUrl")]);
                 let addQianggouSuccess = await page.$eval("#result > div > div > div.success-lcol > div.success-top > h3", (el) => el.innerText);
                 if (addQianggouSuccess.indexOf("商品已成功加入购物车") >= 0) {
                     console.log(chalk.green(`${itemName}加入购物车成功`));
 
-                    await page.goto("https://trade.jd.com/shopping/order/getOrderInfo.action", {
-                        waitUntil: "domcontentloaded",
-                    });
+                    await page.goto("https://trade.jd.com/shopping/order/getOrderInfo.action");
                     const mima = config.password;
                     // 填入密码。提交订单
                     await page.waitForFunction(
@@ -75,19 +75,24 @@ const jd_buy = async (config) => {
                             document.querySelector(".quark-pw-result-input").value = mima;
                             const inputEvent = new Event("input");
                             document.querySelector(".quark-pw-result-input").dispatchEvent(inputEvent);
+                            return true;
                         },
                         {},
                         mima
                     );
                     await Promise.all([page.waitForNavigation(), page.click("#order-submit")]);
-                    let addDingdanSuccess = await page.$eval(
-                        "#indexBlurId > div > div.page-inner-wrap > div.index-content > div > div:nth-child(1) > div.order-info.float-clear > div.float-left.order-info-left.float-clear > div.float-left.order-info-left-detail > div.order-info-left-detail-item-title",
-                        (el) => el.innerText
-                    );
-                    if (addDingdanSuccess.indexOf("订单提交成功") >= 0) {
-                        console.log(chalk.green(`${addDingdanSuccess}`));
-                    } else {
-                        console.log(chalk.red(`订单提交失败`));
+                    try {
+                        let addDingdanSuccess = await page.$eval(
+                            "#indexBlurId > div > div.page-inner-wrap > div.index-content > div > div:nth-child(1) > div.order-info.float-clear > div.float-left.order-info-left.float-clear > div.float-left.order-info-left-detail > div.order-info-left-detail-item-title",
+                            (el) => el.innerText
+                        );
+                        if (addDingdanSuccess.indexOf("订单提交成功") >= 0) {
+                            console.log(chalk.green(`${addDingdanSuccess}`));
+                        } else {
+                            console.log(chalk.red(`订单提交失败`));
+                        }
+                    } catch (error) {
+                        console.log(chalk.red(`----抢购商品没了。----`));
                     }
                 } else {
                     console.log(chalk.red(`${itemName}加入购物车失败`));
