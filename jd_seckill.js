@@ -166,7 +166,7 @@ const jd_yuyue = async (config) => {
         await Promise.all([
             page.setUserAgent(userAgent.random()),
             page.setJavaScriptEnabled(true), //  允许执行 js 脚本
-            page.goto(config.item_url),
+            page.goto(config.item_url, { waitUntil: "domcontentloaded" }),
         ]);
 
         let itemName = await page.$eval("body > div:nth-child(10) > div > div.itemInfo-wrap > div.sku-name", (el) => el.innerText);

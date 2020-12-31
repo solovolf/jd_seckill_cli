@@ -44,7 +44,13 @@ inquirer
         if (answers.id_buy.password) {
             config.password = answers.id_buy.password;
         } else {
-            console.log(chalk.red("请填写生成订单需要的密码"));
+            if (!config.password && answers.action == "抢购") {
+                console.log(chalk.red("请填写生成订单需要的密码"));
+                return;
+            }
+        }
+        if (!config.cookie) {
+            console.log(chalk.red("请填写cookie"));
             return;
         }
         switch (answers.action) {
