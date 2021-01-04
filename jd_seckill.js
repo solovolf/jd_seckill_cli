@@ -49,10 +49,13 @@ const jd_buy = async (config) => {
         console.log(chalk.green(`开始访问商品页面成功---------`));
         let itemName = await page.$eval("body > div:nth-child(10) > div > div.itemInfo-wrap > div.sku-name", (el) => el.innerText);
         // 数量变为2
-        await page.waitForFunction(() => {
-            document.querySelector("#buy-num").value = config.qinggou_num;
-            return true;
-        });
+        await page.waitForFunction(
+            () => {
+                document.querySelector("#buy-num").value = config.qinggou_num;
+            },
+            {},
+            config
+        );
         // 抢购
         await qianggou(page);
         console.log(chalk.green(`开始寻找按钮点击`));
