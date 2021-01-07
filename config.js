@@ -1,6 +1,10 @@
 module.exports = {
-    item_url: "https://item.jd.com/100012043978.html",
-    password: "",
-    cookie: "",
+    item_url: "https://item.jd.com/100016091234.html",
+    // item_url: "https://item.jd.com/100012043978.html",
+    password: "movingyk123",
+    cookie:
+        "__jdu=1603249887721525940931; shshshfpa=fdd7b52a-fcb7-3128-da56-3b053c918771-1603249889; shshshfpb=un7QEgxMi3lMkouIuNkWtWA%3D%3D; __jdv=76161171|direct|-|none|-|1610004475270; areaId=2; PCSYCityID=CN_310000_310100_310114; unick=solovolf; pin=solovolf; __jda=122270672.1603249887721525940931.1603249888.1603768297.1610004475.3; __jdc=122270672; shshshfp=00c058bce70e08368e54471de668a5e4; 3AB9D23F7A4B3C9B=QOHI7EJEG2YN62WHQ6UXWFKN2IJXKLX7LDJZB4KA43GOHI5BFHQNJZCLCE27NQ3BTMWM3NVTNMM5DHAVIAZVGF2SGE; ipLoc-djd=2-2826-51941-0; shshshsID=b448a7bdf49cffae5b941f1d416fa97d_8_1610004794545; __jdb=122270672.14.1603249887721525940931|3.1610004475",
     qinggou_num: 2,
+    startTime: 1610071190935,
+    // startTime: 1610007592042,
 };

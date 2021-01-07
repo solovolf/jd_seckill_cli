@@ -1,10 +1,22 @@
 #!/usr/bin/env node
-const path = require("path");
-const fs = require("fs");
 const inquirer = require("inquirer");
 const chalk = require("chalk");
 const { jd_buy, jd_yuyue } = require("./jd_seckill");
 const config = require("./config");
+
+function action(answers) {
+    switch (answers.action) {
+        case "预约":
+            jd_yuyue(config);
+            break;
+        case "抢购":
+            jd_buy(config);
+            break;
+
+        default:
+            break;
+    }
+}
 
 inquirer
     .prompt([
@@ -35,6 +47,22 @@ inquirer
             ],
             default: 0,
         },
+        {
+            type: "rawlist",
+            name: "rightNow",
+            message: "立即执行还是预约",
+            choices: [
+                {
+                    index: 1,
+                    value: "立即执行",
+                },
+                {
+                    index: 0,
+                    value: "预约",
+                },
+            ],
+            default: 0,
+        },
     ])
     .then((answers) => {
         if (answers.id_buy.itemUrl) {
@@ -53,16 +81,27 @@ inquirer
             console.log(chalk.red("请填写cookie"));
             return;
         }
-        switch (answers.action) {
-            case "预约":
-                jd_yuyue(config);
-                break;
-            case "抢购":
-                jd_buy(config);
-                break;
+        if (answers.rightNow === "立即执行") {
+            action(answers);
+        } else {
+            var cur = new Date();
+            if (isNaN(config.startTime)) {
+                console.log("配置文件中填写时间后才能预约");
+                return;
+            } else if(cur.getTime()>config.startTime){
+                console.log("填写的时间已经过了");
+                return;
+            }
 
-            default:
-                break;
+            console.log("开始预约时间");
+            let interval = setInterval(() => {
+                cur = new Date();
+                if (cur.getTime() > config.startTime) {
+                    console.log("预定时间开始");
+                    action(answers);
+                    clearInterval(interval);
+                }
+            }, 1000);
         }
     })
     .catch((error) => {
