@@ -23,8 +23,8 @@ inquirer
         {
             type: "input",
             name: "id_buy.itemUrl",
-            message: "需要抢购的商品URL，默认是茅台 - ",
-            default: "https://item.jd.com/100012043978.html",
+            message: "需要抢购的商品URL",
+            default: config.item_url,
         },
         {
             type: "password",
@@ -37,12 +37,12 @@ inquirer
             message: "选择需要执行的操作",
             choices: [
                 {
-                    index: 0,
-                    value: "预约",
-                },
-                {
                     index: 1,
                     value: "抢购",
+                },
+                {
+                    index: 0,
+                    value: "预约",
                 },
             ],
             default: 0,
@@ -88,7 +88,7 @@ inquirer
             if (isNaN(config.startTime)) {
                 console.log("配置文件中填写时间后才能预约");
                 return;
-            } else if(cur.getTime()>config.startTime){
+            } else if (cur.getTime() > config.startTime) {
                 console.log("填写的时间已经过了");
                 return;
             }

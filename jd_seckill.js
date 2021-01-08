@@ -60,7 +60,7 @@ const jd_buy = async (config) => {
             );
             console.log(chalk.red(`正在尝试寻找抢购按钮点击`));
             let searchQianggou = await page.$eval("#btn-reservation", (el) => el.innerText);
-            if (searchQianggou.indexOf("抢购") >= 0) {
+            if (searchQianggou.indexOf("抢购") >= -1) {
                 console.log(chalk.green(`寻找到了，开始抢购`));
                 await Promise.all([page.waitForNavigation(), page.click("#btn-reservation")]);
                 let addQianggouSuccess = await page.$eval("#result > div > div > div.success-lcol > div.success-top > h3", (el) => el.innerText);
